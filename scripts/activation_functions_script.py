@@ -313,7 +313,7 @@ def gatherPRELUSamples(numSamples, alpha_init, num_epochs, train_data, valid_dat
 		if test_data is not None:
 			prelu_test_acc = createBestModelAndCalculateAccuracy(prelu_stats[0].model, best_prelu_model,
 			                                                     prelu_stats[0].model.params,
-			                                                     prelu_stats[0].best_model_params, test_data, 'Test')
+			                                                     prelu_stats[0].best_model_params, test_data, 'Test', 'PReLU')
 			prelu_test_accs.append(prelu_test_acc)
 
 	mean = np.array(prelu_valid_accs).mean()
@@ -506,7 +506,7 @@ if __name__ == "__main__":
 	sys.stderr.write('Training begun...\n')
 
 	# redirect stdout
-	sys.stdout = open(file_name, 'w+')
+	# sys.stdout = open(file_name, 'w+')
 
 	print(time.time())
 	main(model_to_run, num_samples, num_epochs, early_stopping)
