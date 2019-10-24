@@ -449,6 +449,57 @@ def gatherELUSamples(numSamples, alpha, num_epochs, train_data, valid_data, rng,
 	return mean, sd
 
 
+def createMultiLayerAffineModel(numHiddenLayers, input_dim, hidden_dim, output_dim, rng):
+	return createMultiLayerModel(numHiddenLayers + 1, None, input_dim, hidden_dim, output_dim, rng)
+
+
+def gatherAffineSamples(numSamples, num_epochs, train_data, valid_data, test_data=None, early_stopping=None):
+	valid_accs = []
+
+	if test_data is not None:
+		test_accs = []
+
+	for i in range(0, numSamples):
+		print("*********** Sample {} ***********".format(i + 1))
+		# reset rng
+		rng.seed(i)
+
+		# create model (3 layers)
+		model = createMultiLayerAffineModel(numHiddenLayers, input_dim, hidden_dim, output_dim, rng)
+
+		stats = trainModel(model, train_data, valid_data,
+		                   learning_rate=0.01,
+		                   num_epochs=num_epochs,
+		                   stats_interval=1,
+		                   batch_size=batch_size,
+		                   hidden_dim=hidden_dim, early_stopping=early_stopping)
+
+		# create empty "best model"
+		best_model = createMultiLayerAffineModel(numHiddenLayers, input_dim, hidden_dim, output_dim, rng)
+
+		# report best model validation set accuracy
+		valid_acc = createBestModelAndCalculateAccuracy(stats[0].model, best_model, stats[0].model.params,
+		                                                stats[0].best_model_params, valid_data, 'Validation')
+
+		if test_data is not None:
+			test_acc = createBestModelAndCalculateAccuracy(stats[0].model, best_model, stats[0].model.params,
+			                                               stats[0].best_model_params, test_data, 'Test')
+			test_accs.append(test_acc)
+
+		valid_accs.append(valid_acc)
+
+	mean = np.array(valid_accs).mean()
+	sd = np.array(valid_accs).std()
+
+	if test_data is not None:
+		mean_test = np.array(test_accs).mean()
+		sd_test = np.array(test_accs).std()
+
+		return mean, sd, mean_test, sd_test
+
+	return mean, sd
+
+
 def main(model_to_run, num_samples, num_epochs, early_stopping):
 	# The below code will set up the data providers, random number
 	# generator and logger objects needed for training runs. As
@@ -488,6 +539,9 @@ def main(model_to_run, num_samples, num_epochs, early_stopping):
 		accs = gatherRRELUSamples(num_samples, layer_rng, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
 	elif model_to_run == 'elu':
 		accs = gatherELUSamples(num_samples, 1.0, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
+	elif model_to_run == 'affine':
+		accs = gatherAffineSamples(num_samples, num_epochs, train_data, valid_data, rng, test_data=test_data,
+		                        early_stopping=early_stopping)
 	else:
 		print("ERROR: MODEL NOT FOUND")
 
