@@ -453,7 +453,7 @@ def createMultiLayerAffineModel(numHiddenLayers, input_dim, hidden_dim, output_d
 	return createMultiLayerModel(numHiddenLayers + 1, None, input_dim, hidden_dim, output_dim, rng)
 
 
-def gatherAffineSamples(numSamples, num_epochs, train_data, valid_data, test_data=None, early_stopping=None):
+def gatherAffineSamples(numSamples, num_epochs, train_data, valid_data, rng, test_data=None, early_stopping=None):
 	valid_accs = []
 
 	if test_data is not None:
