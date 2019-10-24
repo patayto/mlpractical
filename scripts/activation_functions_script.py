@@ -485,9 +485,9 @@ def main(model_to_run, num_samples, num_epochs, early_stopping):
 		accs = gatherPRELUSamples(num_samples, 0.1, num_epochs, train_data, valid_data, rng, test_data, early_stopping)
 	elif model_to_run == 'rrelu':
 		layer_rng = np.random.RandomState(10)
-		accs = gatherRRELUSamples(num_samples, layer_rng, num_epochs, train_data, valid_data, rng, test_data, early_stopping)
+		accs = gatherRRELUSamples(num_samples, layer_rng, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
 	elif model_to_run == 'elu':
-		accs = gatherELUSamples(num_samples, 1.0, num_epochs, train_data, valid_data, rng, test_data, early_stopping)
+		accs = gatherELUSamples(num_samples, 1.0, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
 	else:
 		print("ERROR: MODEL NOT FOUND")
 
