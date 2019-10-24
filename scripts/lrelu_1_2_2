@@ -1,0 +1,14 @@
+1571930886.311702
+KeysView(<numpy.lib.npyio.NpzFile object at 0x10e379748>)
+KeysView(<numpy.lib.npyio.NpzFile object at 0x10e379f28>)
+KeysView(<numpy.lib.npyio.NpzFile object at 0x10e379710>)
+KeysView(<numpy.lib.npyio.NpzFile object at 0x10e379780>)
+KeysView(<numpy.lib.npyio.NpzFile object at 0x10e379748>)
+*********** Sample 1 ***********
+  0%|          | 0/2 [00:00<?, ?it/s]Exp Prog:   0%|          | 0/2 [00:00<?, ?it/s]Exp Prog:  50%|█████     | 1/2 [00:08<00:08,  8.89s/it]Exp Prog: 100%|██████████| 2/2 [00:17<00:00,  8.69s/it]Exp Prog: 100%|██████████| 2/2 [00:17<00:00,  8.56s/it]
+Validation set accuracy on best model: 0.8084810126582278
+Test set accuracy on best model: 0.7963924050632911
+
+Validation accuracy of best model: 0.8084810126582278 (± 0.0)
+Validation accuracy of best model: 0.7963924050632911 (± 0.0)
+1571930908.371003

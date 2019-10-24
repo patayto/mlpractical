@@ -67,7 +67,6 @@ def test_random_relu():
     return fprop_test, out, correct_outputs['fprop_correct'], bprop_test, grads, correct_outputs['grad_correct'], fprop_test_rng_leak, out_rng_leak, correct_outputs['fprop_correct_rng_leakiness'], bprop_test_rng_leak, grads_rng_leak, correct_outputs['bprop_correct_rng_leakiness']
 
 
-
 def test_parametric_relu():
     # loaded = np.load("../data/correct_results.npz")
     rng = np.random.RandomState(92019)
