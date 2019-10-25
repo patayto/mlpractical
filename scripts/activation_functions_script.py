@@ -160,7 +160,8 @@ def createMultiLayerModel(numHiddenLayers, hiddenLayerType, input_dim, hidden_di
     ]
 
     for i in range(numHiddenLayers):
-        model_layers.append(hiddenLayerType)
+        if hiddenLayerType is not None:
+            model_layers.append(hiddenLayerType)
 
         if i == numHiddenLayers - 1:
             # final numHiddenLayers
@@ -540,8 +541,7 @@ def main(model_to_run, num_samples, num_epochs, early_stopping):
 	elif model_to_run == 'elu':
 		accs = gatherELUSamples(num_samples, 1.0, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
 	elif model_to_run == 'affine':
-		accs = gatherAffineSamples(num_samples, num_epochs, train_data, valid_data, rng, test_data=test_data,
-		                        early_stopping=early_stopping)
+		accs = gatherAffineSamples(num_samples, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
 	else:
 		print("ERROR: MODEL NOT FOUND")
 
