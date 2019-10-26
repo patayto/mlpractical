@@ -501,7 +501,7 @@ def gatherAffineSamples(numSamples, num_epochs, train_data, valid_data, rng, tes
 	return mean, sd
 
 
-def main(model_to_run, num_samples, num_epochs, early_stopping):
+def main(model_to_run, num_samples, num_epochs, early_stopping, alpha, all_data):
 	# The below code will set up the data providers, random number
 	# generator and logger objects needed for training runs. As
 	# loading the data from file take a little while you generally
@@ -539,7 +539,10 @@ def main(model_to_run, num_samples, num_epochs, early_stopping):
 		layer_rng = np.random.RandomState(10)
 		accs = gatherRRELUSamples(num_samples, layer_rng, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
 	elif model_to_run == 'elu':
-		accs = gatherELUSamples(num_samples, 1.0, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
+		if all_data:
+			accs = gatherELUSamples(num_samples, alpha, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
+		else:
+			accs = gatherELUSamples(num_samples, alpha, num_epochs, train_data_100, valid_data_10, rng, test_data=test_data, early_stopping=early_stopping)
 	elif model_to_run == 'affine':
 		accs = gatherAffineSamples(num_samples, num_epochs, train_data, valid_data, rng, test_data=test_data, early_stopping=early_stopping)
 	else:
@@ -555,8 +558,10 @@ if __name__ == "__main__":
 	num_samples = int(sys.argv[2])
 	num_epochs = int(sys.argv[3])
 	early_stopping = int(sys.argv[4])
+	alpha = float(sys.argv[5])
+	all_data = bool(sys.argv[6])
 
-	file_name = '{}_{}_{}_{}'.format(model_to_run, num_samples, num_epochs, early_stopping)
+	file_name = '{}_{}_{}_{}_{}'.format(model_to_run, num_samples, num_epochs, early_stopping, alpha)
 
 	sys.stderr.write('Training begun...\n')
 
@@ -564,7 +569,7 @@ if __name__ == "__main__":
 	# sys.stdout = open(file_name, 'w+')
 
 	print(time.time())
-	main(model_to_run, num_samples, num_epochs, early_stopping)
+	main(model_to_run, num_samples, num_epochs, early_stopping, alpha, all_data)
 	print(time.time())
 
 	sys.stderr.write('Training complete! See {} for output.'.format(file_name))
